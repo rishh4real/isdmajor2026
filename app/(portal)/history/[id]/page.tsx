@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { calculateCompletion, classifyRisk, STATUS_LABELS } from "@/lib/checklist";
 import { findAssessmentById } from "@/lib/repository";
 import { requireUser } from "@/lib/session";
+import { PrintAssessmentButton } from "./print-assessment-button";
 import styles from "./page.module.css";
 
 function formatDate(value: string) {
@@ -30,7 +31,10 @@ export default async function AssessmentDetailPage({
   return (
     <section>
       {saved ? <div className={styles.success} role="status">Assessment saved successfully.</div> : null}
-      <Link className={styles.backLink} href="/history">← Assessment History</Link>
+      <div className={styles.pageActions}>
+        <Link className={styles.backLink} href="/history">← Assessment History</Link>
+        <PrintAssessmentButton />
+      </div>
       <div className={`card ${styles.heading}`}>
         <div>
           <p className={styles.eyebrow}>Assessment record</p>
