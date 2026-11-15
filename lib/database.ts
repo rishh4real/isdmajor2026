@@ -5,7 +5,17 @@ import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { hashPassword } from "./password";
 
-const databasePath = process.env.DATABASE_PATH ?? path.join(process.cwd(), "data", "farm-portal.sqlite");
+function resolveDatabasePath() {
+  if (process.env.DATABASE_PATH) return process.env.DATABASE_PATH;
+
+  // Vercel deploys application code under /var/task, which is read-only at runtime.
+  // Its temporary directory is writable and lets the demo portal start normally.
+  if (process.cwd().startsWith("/var/task")) return path.join("/tmp", "farm-portal.sqlite");
+
+  return path.join(process.cwd(), "data", "farm-portal.sqlite");
+}
+
+const databasePath = resolveDatabasePath();
 
 mkdirSync(path.dirname(databasePath), { recursive: true });
 

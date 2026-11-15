@@ -133,7 +133,7 @@ FarmWard is a full-stack digital farm management platform engineered to assist a
 | Variable | Required in Prod | Description | Default |
 | :--- | :---: | :--- | :--- |
 | `AUTH_SECRET` | **Yes** | Cryptographic key used to sign session cookies. In production, provide a 64+ char random string. | `development-only-change-me` |
-| `DATABASE_PATH` | No | Absolute or relative filesystem path to the SQLite database file. | `data/farm-portal.sqlite` |
+| `DATABASE_PATH` | No | Absolute or relative SQLite path. Vercel falls back to temporary `/tmp` storage for demos. | `data/farm-portal.sqlite` locally |
 | `NODE_ENV` | No | Node environment mode (`development`, `production`, `test`). | `development` |
 
 ---
@@ -255,6 +255,10 @@ npm run build
 # Start production server
 npm run start
 ```
+
+### Vercel demo deployment
+
+Vercel runs application code from a read-only directory. FarmWard automatically uses `/tmp/farm-portal.sqlite` there so the demo can start. This temporary database can reset when Vercel creates a new serverless instance or a new deployment. Set `AUTH_SECRET` in Vercel Project Settings → Environment Variables before deploying. Use a managed database before relying on hosted assessment records for ongoing use.
 
 ---
 
